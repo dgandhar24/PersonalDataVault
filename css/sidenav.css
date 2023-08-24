@@ -1,0 +1,81 @@
+#menu {
+    padding: 1rem 0.5rem;
+    margin-right: 1rem;
+    border-radius: 1rem;
+}
+
+.menu {
+    /* border: 1px solid green; */
+    border-radius: 1rem;
+    cursor: pointer;
+    user-select: none;
+    /* background: rgba(51,166,103,.19); */
+}
+
+
+.menu-name {
+    border-radius: 1rem;
+    padding: 0.3rem 0rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;    
+    justify-content: flex-start;
+    align-items: center;
+    color: #56595c;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.menu-name:hover {
+    /* background: rgba(40,167,69,.6); */
+    /* background: rgba(0,123,255,.0627451); */
+    color: #007bff;
+    color: rgba(32,26,162,.866667);
+    color: rgb(0, 92, 190);
+}
+
+.menu-items {
+    display: none;
+    /* border: 1px solid blue; */
+    padding-left: 1rem;
+}
+
+.menu-name>.material-icons {
+    margin-right: 0.5rem;
+}
+
+.menu-name>.arrow {
+    border-radius: 1rem;
+    margin-left: 0.5rem;
+    font-size: 1.4rem;
+    /* background: rgba(0,123,255,.0627451); */
+    color: #007bff;
+}
+
+.material-icons.open {
+    animation: rotationopen 0.2s ease-in-out forwards;
+}
+
+@keyframes rotationopen {
+    from {
+            transform: rotate(0deg);
+    }
+    to {
+            transform: rotate(90deg);
+    }
+}
+
+.material-icons.close {
+    animation: rotationclose 0.2s ease-in-out;
+}
+
+@keyframes rotationclose {
+    from {
+            transform: rotate(90deg);
+    }
+    to {
+            transform: rotate(0deg);
+    }
+}

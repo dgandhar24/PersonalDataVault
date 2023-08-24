@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlexBox</title>
+    <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/sidenav.css"> 
+    <link rel="stylesheet" href="css/upload-card.css">
+    <link rel="stylesheet" href="css/loading_dots_animation.css">
+
+    <script src="scripts/index.js"></script>
+    <script src="scripts/menu.js"></script>
+</head>
+<body onload="onLoad()" onclick="handle_more_options()">
+    <div class="container">
+       
+        <div class="content">
+            <div class="sidenav">
+                <h1 class="brand-logo">
+                    <i class="material-icons">cloud</i> G-Drive
+                </h1>
+                <br>
+                <!-- menu -->
+                <div id="menu">
+                </div>
+            </div>
+
+            <div class="main">
+                <Nav class="navbar" id="navbar">
+                    <div class="nav-input">
+                        <div class="search">
+                            <i class="material-icons search-icon">search</i>
+                            <input type="text" placeholder="Search">
+                        </div>
+                    </div>
+                    <div class="nav-list">
+                        <!-- <a class="nav-link" href="#">A</a>
+                        <a class="nav-link" href="#">B</a> -->
+                        <a class="nav-link" href="#"><i class="material-icons-outlined">settings</i></a>
+                        <a class="nav-link" href="#"><i class="material-icons-outlined">account_circle</i></a>
+                    </div>
+                </Nav>
+                <!-- <h1>Main Content</h1> -->
+
+                <div class="list_and_option">
+                    <div class="list-area">
+                        <div class="sticky-header">    
+                            <ul id="filepath" class="breadcrumb">
+                                <li class="bc-item gray-text">My Drive</li> > 
+                                <li class="bc-item gray-text">My Folder</li> >
+                                <li class="bc-item blue blue-text">Scripts</li>
+                            </ul>
+        
+                            <!-- <button onclick = "backFolder()">Back</button> -->
+                            
+                            <div class="header">
+                                <div class="list-header">
+                                    <div class="item-check">
+                                        <input type="checkbox" name="selected" id="">
+                                        <i class="material-icons">folder</i>
+                                    </div>
+                                    <div class="item-info">
+                                        <span class="item-name">Name</span>
+                                        <span class="item-size">Size</span>
+                                        <span class="item-modified">Last Modified</span>
+                                    </div>
+                                    <i class="material-icons">more_vert</i>
+                                </div>
+                            </div>
+                        </div>
+     
+                        <div id = "list" class="list">
+                            <div class="list-item">
+                                <input type="checkbox" name="selected" id="">
+                                <i class="material-icons">folder</i>
+                                <div class="item-info">
+                                    <span class="item-name">My Folder</span>
+                                    <span class="item-size">214 KB</span>
+                                    <span class="item-modified">Aug 14, 2020</span>
+                                </div>
+                                <i class="material-icons">more_vert</i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="options">
+                        <button id="upload-file-button" class="option" onclick="selectFile()"><i class="material-icons">upload_file</i>Upload File</button>
+                        <button class="option">
+                            <div class="upload_folder">
+                                <i class="material-icons-outlined upic">arrow_upward</i>
+                                <i class="material-icons-outlined">folder</i>
+                            </div>
+                            Upload Folder
+                        </button>
+                        <button onclick="openCreateModal()" class="option"><i class="material-icons-outlined">create_new_folder</i>New Folder</button>
+                        <!-- <button class="option"><i class="material-icons-outlined">delete</i>Delete</button> -->
+                        <!-- <button class="option"><i class="material-icons-outlined">create</i>Rename Folder</button> -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+        <!-- <footer class="footer green" id="footer">
+            <ul>
+                <li>Home</li>
+                <li>About</li>
+                <li>Menu</li>
+                <li>Contact</li>
+            </ul>
+        </footer> -->
+    </div>
+
+    <div id="file-upload">
+        <input type="file" name="upload-file" id="upload-file" onchange="uploadFileAJAX()" multiple>
+    </div>
+
+    <iframe id="file-download" src="" frameborder="0" style="display: none;"></iframe>
+
+    <div id="more_option_folder" class="more_options_menu">
+        <div onclick="downloadFile()" class="menu_option"><i class="material-icons-outlined">download</i>Download File</div>
+        <div onclick="openDeleteModal()" class="menu_option"><i class="material-icons-outlined">delete</i>Delete</div>
+        <div onclick="openRenameModal()" class="menu_option"><i class="material-icons-outlined">create</i>Rename</div>
+    </div>
+
+    <div id="create-folder-modal" class="modal-container">
+        <div class="modal">
+            <div class="modal-header">
+                <i class="material-icons">folder</i>
+                <span>Create Folder</span>
+            </div>
+            <label class="modal-item" for="folder_name">Folder Name</label>
+            <div class="modal-item">
+                <input type="text" placeholder="Enter Folder Name" name="folder_name" id="folder-name" autofocus>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeCreateModal()">cancel</button>
+                <button class="btn btn-blue" onclick="createNewFolder()">create</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="delete-modal" class="modal-container">
+        <div class="modal">
+            <div class="modal-header">
+                <span>Delete?</span>
+            </div>
+            <div class="modal-text">
+                <p>Are you sure you want to delete &nbsp;<span id="file-to-delete"> </span>&nbsp; from your Drive?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeDeleteModal()">cancel</button>
+                <button class="btn btn-blue" onclick="deleteFolderOrFile()">delete</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="rename-modal" class="modal-container">
+        <div class="modal">
+            <div class="modal-header">
+                <span>Rename</span>
+            </div>
+            <div class="modal-item">
+               Rename &nbsp;<span id="file-to-rename"> </span>&nbsp; to
+            </div>
+            <div class="modal-item">
+                <input type="text" placeholder="Enter Folder Name" name="folder_name" id="folder-rename" autofocus>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeRenameModal()">cancel</button>
+                <button class="btn btn-blue" onclick="renameFolderOrFile()">Rename</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="upload-card" class="upload-card">
+        <div class="upload-card-header">
+            <i onclick="toggleUploadCardBody()" class="material-icons">expand_more</i>
+            <h3 id="upload-title">Uploading</h3>
+            <i id="upload-close" onclick="hideUploadCard()" class="material-icons">close</i>
+        </div>
+
+        <div id="upload-card-body" class="uploading-files">
+            <!-- <div class="toast">
+                <div class="toast-icon"><i class="material-icons">folder</i></div>
+                <div class="toast-content">
+                    <div class="toast-title">File-name</div>
+                    <svg class="progress-circle">
+                        <circle />
+                        <circle class="progress-circle-value" />
+                    </svg>
+                </div>
+
+                <div class="toast-cancel">
+                    <i class="material-icons">cancel</i>
+                </div>
+            </div> -->
+
+        </div>
+    </div>
+</body>
+</html>

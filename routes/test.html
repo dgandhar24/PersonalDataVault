@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        .container {
+            max-width: 100%;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            /* justify-content: center; */
+            align-items: center;
+            border: 1px solid red;
+        }
+
+        .btn {
+           width: 40%;
+           margin: 0.1rem 5%;
+            padding: 1rem;
+            cursor: pointer;
+            color: gold;
+            background-color: black;
+        }
+
+        .label {
+            width: 50%;
+             margin: 0.1rem 5%;
+             padding: 1rem;
+             font-weight: 600;
+             cursor: pointer;
+             color: crimson;
+        }
+
+        #result {
+            padding: 1rem;
+            max-width: 90%;
+            border: 1px solid blue;
+            align-self: center;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <div class="btn" onclick="sendReq()">http://localhost:5000/api/My Drive</div>
+        <div class="btn" onclick="sendReq()">http://localhost:5000/api/My Drive/folder1</div>
+        <div class="label">POST</div>
+        <input id="folder"type="text">
+        <div class="btn" onclick="sendPostReq()">http://localhost:5000/api/My Drive/</div>
+        <div class="btn" onclick="sendPostReq()">http://localhost:5000/api/My Drive/folder1</div>
+        <div class="label">PUT</div>
+        <input id="rename" type="text">
+        <div class="btn" onclick="sendPutReq()">http://localhost:5000/api/My Drive/ReactJS</div>
+        <div class="btn" onclick="sendPutReq()">http://localhost:5000/api/My Drive/folder1/AngularJS</div>
+        <div class="label">DELETE</div>
+        <div class="btn" onclick="sendDeleteReq()">http://localhost:5000/api/My Drive/ReactJS</div>
+        <div class="btn" onclick="sendDeleteReq()">http://localhost:5000/api/My Drive/folder1/AngularJS</div>
+        <div class="label">UPLOAD</div>
+        <input type="file" name="file_upload" id="file_upload">
+        <div class="btn" onclick="uploadFile()">http://localhost:5000/api/upload/My Drive/ReactJS</div>
+        <div class="btn" onclick="uploadFile()">http://localhost:5000/api/upload/My Drive/folder1/AngularJS</div>
+        <div class="label">DOWNLOAD</div>
+        <a id="file-download" href="" download>Download</a>
+        <div class="btn" onclick="downloadFile()">http://localhost:5000/api/download/My Drive/ReactJS/Logical_Reasoning.pdf</div>
+        <div class="btn" onclick="downloadFile()">http://localhost:5000/api/download/My Drive/folder1/AngularJS/TOC.pdf</div>
+    </div>
+
+    <div id="result"class="container">
+    </div>
+
+    <script>
+        function sendReq() {
+            let path = event.target.innerHTML;
+            let result = document.getElementById("result");
+            fetch(path)
+            .then(res => {
+                return res.json()
+            })
+            .then(data => {
+                console.log(data);
+                result.innerHTML = JSON.stringify(data);
+            })
+            .catch(error => {
+                console.log(error);
+                result.innerHTML = error;
+            })
+        }
+
+        function sendPostReq() {
+            let path = event.target.innerHTML;
+            let inp = document.getElementById("folder");
+            let folder_name = inp.value || "New Folder";
+            let result = document.getElementById("result");
+            fetch(path, {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'applications/json'
+                },
+                body: JSON.stringify({
+                    name: folder_name
+                })
+            })
+            .then(res => {
+                return res.json()
+            })
+            .then(data => {
+                console.log(data);
+                result.innerHTML = JSON.stringify(data);
+            })
+            .catch(error => {
+                console.log(error);
+                result.innerHTML = error;
+            })
+        }
+
+        function sendPutReq() {
+            let path = event.target.innerHTML;
+            let inp = document.getElementById("rename");
+            let folder_name = inp.value || "New Folder";
+            let result = document.getElementById("result");
+            fetch(path, {
+            method: 'PUT',
+            headers: {
+            'Content-Type': 'applications/json'
+            },
+            body: JSON.stringify({
+            name: folder_name
+            })
+            })
+            .then(res => {
+                return res.json()
+            })
+            .then(data => {
+                console.log(data);
+                result.innerHTML = JSON.stringify(data);
+            })
+            .catch(error => {
+                console.log(error);
+                result.innerHTML = error;
+            })
+        }
+
+        function sendDeleteReq() {
+             let path = event.target.innerHTML;
+             fetch(path, {
+                 method: 'DELETE'
+             })
+             .then(res => {
+                return res.json()
+             })
+             .then(data => {
+                console.log(data);
+                result.innerHTML = JSON.stringify(data);
+             })
+             .catch(error => {
+                console.log(error);
+                result.innerHTML = error;
+             })
+        }
+    
+        function uploadFile() {
+            let file_input = document.getElementById("file_upload");
+            let path = event.target.innerHTML;
+            if (file_input.value) {
+                const files = file_input.files;
+                console.log(file_input)
+                console.log(files[0]);
+                const fileData = new FormData();
+                // fileData.append('dirPath', path);
+                fileData.append('newFile', files[0])
+
+                fetch(path, {
+                    method: 'POST',
+                    body: fileData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error(error)
+                })    
+            }
+        }
+    
+        function downloadFile() {
+                var downloadUrl = event.target.innerHTML;
+                console.log(`Download URL: ${downloadUrl}`)
+                let element = document.getElementById("file-download");
+                element.href = downloadUrl;
+                element.click();
+                setTimeout(() => { document.getElementById("file-download").src = ""; }, 500);
+            }
+    </script>
+</body>
+</html>
